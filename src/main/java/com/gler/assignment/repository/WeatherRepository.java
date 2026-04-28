@@ -1,4 +1,4 @@
-package com.gler.assignment;
+package com.gler.assignment.repository;
 
 import com.gler.assignment.model.HourlyWeather;
 import org.springframework.data.jpa.repository.JpaRepository;

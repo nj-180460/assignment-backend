@@ -1,11 +1,9 @@
 package com.gler.assignment.util;
 
-import com.gler.assignment.dto.response.WeatherResponseDTO;
+import com.gler.assignment.dto.response.WeatherClientServiceResponse;
 import com.gler.assignment.model.HourlyWeather;
 
-import java.util.Collections;
 import java.util.Comparator;
-import java.util.Optional;
 import java.util.stream.IntStream;
 
 public final class WeatherMapper {
@@ -14,12 +12,12 @@ public final class WeatherMapper {
         throw new UnsupportedOperationException("Cannot be instantiated. Use static methods only.");
     }
 
-    public static HourlyWeather mapToHourlyWeather(WeatherResponseDTO response) {
+    public static HourlyWeather mapToHourlyWeather(WeatherClientServiceResponse response) {
         if (response == null || response.hourly() == null || response.hourly().time() == null) {
             return null;
         }
 
-        WeatherResponseDTO.HourlyDataDTO hourly = response.hourly();
+        WeatherClientServiceResponse.HourlyDataDTO hourly = response.hourly();
 
         int maxTempIdx = 0;
         if (hourly.temperature2m() != null) {
