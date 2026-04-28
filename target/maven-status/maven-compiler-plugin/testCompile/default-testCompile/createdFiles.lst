@@ -1,3 +1,9 @@
+com\gler\assignment\controller\ForcastControllerTest.class
 com\gler\assignment\util\CharactersReplacerTest.class
-com\gler\assignment\AssignmentApplicationTests.class
 com\gler\assignment\controller\TextReplaceControllerTest.class
+com\gler\assignment\controller\ForcastControllerTest$ExceptionHandlerTests.class
+com\gler\assignment\service\impl\WeatherServiceImplTest$EdgeCaseTests.class
+com\gler\assignment\service\impl\WeatherServiceImplTest.class
+com\gler\assignment\service\impl\WeatherServiceImplTest$NegativeTests.class
+com\gler\assignment\AssignmentApplicationTests.class
+com\gler\assignment\repository\WeatherRepositoryTest.class

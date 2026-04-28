@@ -1,6 +1,6 @@
 package com.gler.assignment.client;
 
-import com.gler.assignment.dto.response.WeatherResponseDTO;
+import com.gler.assignment.dto.response.WeatherClientServiceResponse;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.service.annotation.GetExchange;
 import org.springframework.web.service.annotation.HttpExchange;
@@ -9,7 +9,7 @@ import org.springframework.web.service.annotation.HttpExchange;
 public interface WeatherClient {
 
     @GetExchange("/forecast")
-    WeatherResponseDTO getForecast(
+    WeatherClientServiceResponse getForecast(
             @RequestParam double latitude,
             @RequestParam double longitude,
             @RequestParam String current,
