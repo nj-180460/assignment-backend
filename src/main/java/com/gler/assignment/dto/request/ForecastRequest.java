@@ -1,7 +1,6 @@
 package com.gler.assignment.dto.request;
 
 import jakarta.validation.constraints.NotNull;
-import static java.util.Objects.requireNonNull;
 
 public record ForecastRequest
         (
@@ -15,9 +14,4 @@ public record ForecastRequest
                 Boolean addWindSpeed
         )
 {
-        public ForecastRequest {
-                requireNonNull(addTemperature, "addTemperature cannot be null");
-                requireNonNull(addHumidity, "addHumidity cannot be null");
-                requireNonNull(addWindSpeed, "addWindSpeed cannot be null");
-        }
 }

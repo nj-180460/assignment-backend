@@ -2,9 +2,9 @@ package com.gler.assignment.controller;
 
 import com.gler.assignment.dto.request.ForecastRequest;
 import com.gler.assignment.dto.response.GenericResponse;
-import com.gler.assignment.dto.response.WeatherClientServiceResponse;
 import com.gler.assignment.dto.response.WeatherResponseDTO;
 import com.gler.assignment.service.WeatherService;
+import com.gler.assignment.util.DateUtil;
 import com.gler.assignment.util.RequestIdGenerator;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
@@ -28,9 +28,9 @@ public class ForcastController {
     public ResponseEntity<GenericResponse<WeatherResponseDTO>> getForecast(@Valid @RequestBody ForecastRequest forecastRequest) {
         return ResponseEntity.ok(new GenericResponse<>(
                 RequestIdGenerator.newRequestId(),
-                "time",
+                DateUtil.generateTimestampFormattedDate(),
                 "success",
-                "Successfully created weather record",
+                "Successfully saved weather record",
                 weatherService.getWeather(forecastRequest)
         ));
     }

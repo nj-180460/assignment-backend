@@ -1,39 +1,45 @@
 package com.gler.assignment.util;
 
 import com.gler.assignment.dto.response.WeatherResponseDTO;
-import com.gler.assignment.model.HourlyWeather;
+import com.gler.assignment.model.WeatherDetails;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import javax.annotation.processing.Generated;
 import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2026-04-29T01:56:12+0800",
+    date = "2026-05-06T01:41:12+0800",
     comments = "version: 1.5.5.Final, compiler: javac, environment: Java 17.0.2 (Oracle Corporation)"
 )
 @Component
 public class WeatherObjectMapperImpl implements WeatherObjectMapper {
 
     @Override
-    public WeatherResponseDTO toDTO(HourlyWeather hourlyWeather) {
-        if ( hourlyWeather == null ) {
+    public WeatherResponseDTO toDTO(WeatherDetails weatherDetails) {
+        if ( weatherDetails == null ) {
             return null;
         }
 
-        double temperature = 0.0d;
+        Double temperatureMax = null;
         String temperatureTime = null;
-        double relativeHumidity = 0.0d;
+        Double relativeHumidityMax = null;
         String relativeHumidityTime = null;
-        double windSpeed = 0.0d;
+        Double windSpeedMax = null;
         String windSpeedTime = null;
+        LocalDateTime dateCreated = null;
+        LocalDate recordDate = null;
 
-        temperature = hourlyWeather.getTemperature();
-        temperatureTime = hourlyWeather.getTemperatureTime();
-        relativeHumidity = hourlyWeather.getRelativeHumidity();
-        relativeHumidityTime = hourlyWeather.getRelativeHumidityTime();
-        windSpeed = hourlyWeather.getWindSpeed();
-        windSpeedTime = hourlyWeather.getWindSpeedTime();
+        temperatureMax = weatherDetails.getTemperature();
+        temperatureTime = weatherDetails.getTemperatureTime();
+        relativeHumidityMax = weatherDetails.getRelativeHumidity();
+        relativeHumidityTime = weatherDetails.getRelativeHumidityTime();
+        windSpeedMax = weatherDetails.getWindSpeed();
+        windSpeedTime = weatherDetails.getWindSpeedTime();
+        dateCreated = weatherDetails.getDateCreated();
+        recordDate = weatherDetails.getRecordDate();
 
-        WeatherResponseDTO weatherResponseDTO = new WeatherResponseDTO( temperatureTime, temperature, relativeHumidityTime, relativeHumidity, windSpeedTime, windSpeed );
+        WeatherResponseDTO weatherResponseDTO = new WeatherResponseDTO( dateCreated, recordDate, temperatureTime, temperatureMax, relativeHumidityTime, relativeHumidityMax, windSpeedTime, windSpeedMax );
 
         return weatherResponseDTO;
     }

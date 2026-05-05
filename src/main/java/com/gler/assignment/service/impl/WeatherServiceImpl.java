@@ -1,12 +1,12 @@
 package com.gler.assignment.service.impl;
 
+import com.gler.assignment.constant.WeatherMeasure;
+import com.gler.assignment.model.WeatherDetails;
 import com.gler.assignment.repository.WeatherRepository;
 import com.gler.assignment.client.WeatherClient;
-import com.gler.assignment.constant.HourlyMeasure;
 import com.gler.assignment.dto.request.ForecastRequest;
 import com.gler.assignment.dto.response.WeatherClientServiceResponse;
 import com.gler.assignment.dto.response.WeatherResponseDTO;
-import com.gler.assignment.model.HourlyWeather;
 import com.gler.assignment.service.WeatherService;
 import com.gler.assignment.util.WeatherMapper;
 import com.gler.assignment.util.WeatherObjectMapper;
@@ -15,7 +15,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -40,52 +41,34 @@ public class WeatherServiceImpl implements WeatherService {
     @Transactional
     @Override
     public WeatherResponseDTO getWeather(ForecastRequest forecastRequest) {
-        Map<String, String> filter = filterHourlyParam(forecastRequest);
-        WeatherClientServiceResponse weatherClientServiceResponse = weatherClient.getForecast(
-                52.52,
-                13.41,
-                filter.get("current"),
-                filter.get("hourly")
-        );
+        Map<String, Object> apiParams = buildParams();
+        WeatherClientServiceResponse weatherClientServiceResponse = weatherClient.getForecast(apiParams);
+        LOGGER.info("event=getWeather, message=Retrieved weather info from client");
 
-        HourlyWeather dbResponse = weatherRepository.save(WeatherMapper.mapToHourlyWeather(weatherClientServiceResponse));
+        WeatherDetails dbResponse = weatherRepository.save(WeatherMapper.mapToHourlyWeather(weatherClientServiceResponse, forecastRequest));
         LOGGER.info("event=getWeather, id={}, message=Successfully save the max hourly weather", dbResponse.getId());
 
         return mapToWeatherResponseDTO(dbResponse);
     }
 
+    private Map<String, Object> buildParams() {
+        List<String> dailyParams = new ArrayList<>();
+        Map<String, Object> params = new java.util.HashMap<>(Map.of("daily", String.join(",", dailyParams)));
 
-    private Map<String, String> filterHourlyParam(ForecastRequest forecastRequest) {
+        params.put("latitude", 52.52);
+        params.put("longitude", 13.41);
+        params.put("timezone", "auto");
 
-        StringBuilder current = new StringBuilder();
-        StringBuilder hourly = new StringBuilder();
+        dailyParams.add(WeatherMeasure.TEMPERATURE_2M_MAX.getMeasureMValue());
+        dailyParams.add(WeatherMeasure.RELATIVE_HUMIDITY_2M_MAX.getMeasureMValue());
+        dailyParams.add(WeatherMeasure.WIND_SPEED_MAX.getMeasureMValue());
+        params.put("daily", String.join(",", dailyParams));
 
-        if (forecastRequest.addTemperature()) {
-            current.append(HourlyMeasure.TEMPERATURE_2M.getHourlyMValue());
-            hourly.append(HourlyMeasure.TEMPERATURE_2M.getHourlyMValue());
-        }
-        if (forecastRequest.addWindSpeed()) {
-            current
-                    .append(",")
-                    .append(HourlyMeasure.WIND_SPEED.getHourlyMValue());
-            hourly
-                    .append(",")
-                    .append(HourlyMeasure.WIND_SPEED.getHourlyMValue());
-        }
-        if (forecastRequest.addHumidity()) {
-            hourly
-                    .append(",")
-                    .append(HourlyMeasure.RELATIVE_HUMIDITY_2M.getHourlyMValue());
-        }
-
-        Map<String, String> filter = new HashMap<>();
-        filter.put("current", current.toString());
-        filter.put("hourly", hourly.toString());
-        return filter;
+        return params;
     }
 
 
-    private WeatherResponseDTO mapToWeatherResponseDTO(HourlyWeather hourlyWeather){
-        return weatherObjectMapper.toDTO(hourlyWeather);
+    private WeatherResponseDTO mapToWeatherResponseDTO(WeatherDetails weatherDetails){
+        return weatherObjectMapper.toDTO(weatherDetails);
     }
 }
