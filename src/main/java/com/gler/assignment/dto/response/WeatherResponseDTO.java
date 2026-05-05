@@ -1,12 +1,17 @@
 package com.gler.assignment.dto.response;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+
 public record WeatherResponseDTO
         (
+                LocalDateTime dateCreated,
+                LocalDate recordDate,
                 String temperatureTime,
-                double temperature,
+                Double temperatureMax,
                 String relativeHumidityTime,
-                double relativeHumidity,
+                Double relativeHumidityMax,
                 String windSpeedTime,
-                double windSpeed
+                Double windSpeedMax
         )
 { }
